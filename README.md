@@ -205,3 +205,4 @@ deployment, integration, or partnership, reach out at **antikytheragptchat@gmail
 send a contribution directly:
 
 - **Revolut** — [revolut.me/mel3zaui](https://revolut.me/mel3zaui)
+- **PayPal** — [paypal.me/MelOzzy](https://paypal.me/MelOzzy)

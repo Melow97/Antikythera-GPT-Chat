@@ -369,6 +369,75 @@ body {
   max-width: 480px;
 }
 
+/* --- "Ask it anything" sliding prompt marquee --- */
+
+.marquee-section {
+  max-width: none;
+  padding: 36px 0 56px;
+}
+
+.marquee-eyebrow {
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin: 0 0 22px;
+}
+
+.marquee-viewport {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  gap: 14px;
+  width: max-content;
+  animation: marquee-slide 36s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.marquee-chip {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 12px 22px;
+  font-size: 14px;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(40, 30, 12, 0.06);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.marquee-chip:hover {
+  transform: translateY(-3px);
+  border-color: rgba(91, 138, 114, 0.4);
+}
+
+@keyframes marquee-slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
 /* --- "Real ways people put it to work" showcase frames --- */
 
 .showcase-grid {
@@ -902,8 +971,36 @@ body {
 }
 
 .accent-word {
-  color: var(--bronze-text);
   font-weight: 700;
+  background-image: linear-gradient(
+    90deg,
+    var(--bronze-text), #d9536f, #e08a3d, #cdb23f, #4f9e63, #3f8fd9, #8a6fd9, var(--bronze-text)
+  );
+  background-size: 300% auto;
+  background-position: 0% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  transition: background-position 0.8s ease;
+  cursor: default;
+}
+
+.accent-word:hover {
+  animation: accent-rainbow-cycle 2.6s linear infinite;
+}
+
+@keyframes accent-rainbow-cycle {
+  to {
+    background-position: 300% center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accent-word:hover {
+    animation: none;
+    background-position: 100% center;
+  }
 }
 
 .app-soon-badge {
