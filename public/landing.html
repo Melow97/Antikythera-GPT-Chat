@@ -35,6 +35,7 @@
         </div>
       </div>
       <a href="#pricing" class="nav-link-simple">Pricing</a>
+      <a href="#trust" class="nav-link-simple">Trust</a>
       <a href="#notifications" class="nav-link-simple">Notifications</a>
     </nav>
     <div class="nav-auth">
@@ -108,13 +109,15 @@
     <h1>Welcome to Antikythera GPT Chat</h1>
     <p class="hero-tagline">
       A learning platform for education, coding, and scripting — built around chat with AI
-      you can configure, extend, and connect to your own tools.
+      you can <span class="accent-word">configure</span>, <span class="accent-word">extend</span>,
+      and <span class="accent-word">connect</span> to your own tools.
     </p>
     <p class="hero-subtext">
       Flex it toward IT operations, security investigation, or content moderation support —
       bring your own tools and sections for the workflows that matter to you.
     </p>
     <p class="hero-signin-note">"Start Chat" takes you to sign up — with email or Google.</p>
+    <span class="app-soon-badge">📱 Native app — coming soon</span>
 
     <div id="errorBanner" class="error-banner hidden"></div>
 
@@ -162,31 +165,53 @@
   </section>
 
   <section id="features" class="section">
+    <svg class="decor-gear decor-gear-1" viewBox="0 0 180 180" aria-hidden="true">
+      <path d="M90.00,12.00 L107.08,26.25 L129.00,22.45 L136.67,43.33 L157.55,51.00 L153.75,72.92 L168.00,90.00 L153.75,107.08 L157.55,129.00 L136.67,136.67 L129.00,157.55 L107.08,153.75 L90.00,168.00 L72.92,153.75 L51.00,157.55 L43.33,136.67 L22.45,129.00 L26.25,107.08 L12.00,90.00 L26.25,72.92 L22.45,51.00 L43.33,43.33 L51.00,22.45 L72.92,26.25 Z"/>
+    </svg>
     <h2 class="reveal">What's inside</h2>
-    <div class="card-grid">
-      <div class="card reveal">
-        <div class="card-icon">💬</div>
-        <h3>Multi-model chat</h3>
-        <p>Talk to OpenAI, DeepSeek, or run models fully locally/offline with Ollama — switch
-          any time from a quick picker at the top of the app.</p>
+    <p class="section-lede reveal">Click through — each one is a real, working part of the app today.</p>
+
+    <div class="feature-tabs reveal">
+      <div class="feature-tab-list" role="tablist">
+        <button type="button" class="feature-tab active" data-feature="chat" role="tab" aria-selected="true">
+          <span class="feature-tab-icon">💬</span> Multi-model chat
+        </button>
+        <button type="button" class="feature-tab" data-feature="connections" role="tab" aria-selected="false">
+          <span class="feature-tab-icon">🔌</span> App connections
+        </button>
+        <button type="button" class="feature-tab" data-feature="search" role="tab" aria-selected="false">
+          <span class="feature-tab-icon">🔎</span> Deep web search
+        </button>
+        <button type="button" class="feature-tab" data-feature="workspace" role="tab" aria-selected="false">
+          <span class="feature-tab-icon">🧩</span> Customizable workspace
+        </button>
       </div>
-      <div class="card reveal">
-        <div class="card-icon">🔌</div>
-        <h3>App connections</h3>
-        <p>Real OAuth connections to Google, Microsoft, GitHub, Slack, and Zoom, so the agent
-          can work with the tools you already use.</p>
-      </div>
-      <div class="card reveal">
-        <div class="card-icon">🔎</div>
-        <h3>Deep web search</h3>
-        <p>Toggle on live web search before a message sends, and get answers grounded in
-          current sources with citations.</p>
-      </div>
-      <div class="card reveal">
-        <div class="card-icon">🧩</div>
-        <h3>Customizable workspace</h3>
-        <p>Add your own sidebar sections — notes, a calendar, or freeform space — and shape
-          the app around how you actually work.</p>
+
+      <div class="feature-panel">
+        <div class="feature-panel-content active" data-feature="chat">
+          <div class="feature-panel-icon">💬</div>
+          <h3>Multi-model chat</h3>
+          <p>Talk to OpenAI, DeepSeek, or run models fully locally/offline with Ollama — switch
+            any time from a quick picker at the top of the app.</p>
+        </div>
+        <div class="feature-panel-content" data-feature="connections">
+          <div class="feature-panel-icon">🔌</div>
+          <h3>App connections</h3>
+          <p>Real OAuth connections to Google, Microsoft, GitHub, Slack, and Zoom, so the agent
+            can work with the tools you already use.</p>
+        </div>
+        <div class="feature-panel-content" data-feature="search">
+          <div class="feature-panel-icon">🔎</div>
+          <h3>Deep web search</h3>
+          <p>Toggle on live web search before a message sends, and get answers grounded in
+            current sources with citations.</p>
+        </div>
+        <div class="feature-panel-content" data-feature="workspace">
+          <div class="feature-panel-icon">🧩</div>
+          <h3>Customizable workspace</h3>
+          <p>Add your own sidebar sections — notes, a calendar, or freeform space — and shape
+            the app around how you actually work.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -249,6 +274,7 @@
         <div class="pricing-card-price">TBD</div>
         <span class="pricing-cta pricing-cta-disabled">Not available yet</span>
         <ul class="pricing-features pricing-features-soon">
+          <li>Native app (iOS, Android, desktop)</li>
           <li>Server-side chat history (synced across devices)</li>
           <li>Hosted/managed version — no setup or Ollama install required</li>
           <li>Team &amp; multi-admin workspaces</li>
@@ -260,6 +286,34 @@
       This project is self-hosted and open source — running it costs you nothing but your
       own machine's resources and any optional third-party API keys you choose to add.
     </p>
+  </section>
+
+  <section id="trust" class="section section-alt">
+    <h2 class="reveal">Built with trust in mind</h2>
+    <p class="section-lede reveal">
+      We're small and independent, which means these promises can stay simple instead of
+      buried in a 40-page policy.
+    </p>
+    <div class="card-grid">
+      <div class="card reveal">
+        <div class="card-icon">🔒</div>
+        <h3>Your data, your control</h3>
+        <p>Chat history lives only in your browser, never on our servers. See exactly what we
+          collect and why in the <a href="/privacy.html">Privacy Policy</a>.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🚫</div>
+        <h3>Nothing sold, ever</h3>
+        <p>We don't sell your data, and we don't use your conversations to train any model —
+          it's in writing in the <a href="/terms.html">Terms of Service</a>.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🔍</div>
+        <h3>Open by design</h3>
+        <p>The code is public on <a href="https://github.com/Melow97/Antikythera-GPT-Chat" target="_blank" rel="noopener">GitHub</a> —
+          verify what actually happens to your data instead of taking our word for it.</p>
+      </div>
+    </div>
   </section>
 
   <section id="notifications" class="section">
@@ -281,10 +335,18 @@
   </section>
 
   <section id="about" class="section section-alt">
+    <svg class="decor-gear decor-gear-2" viewBox="0 0 180 180" aria-hidden="true">
+      <path d="M90.00,12.00 L107.08,26.25 L129.00,22.45 L136.67,43.33 L157.55,51.00 L153.75,72.92 L168.00,90.00 L153.75,107.08 L157.55,129.00 L136.67,136.67 L129.00,157.55 L107.08,153.75 L90.00,168.00 L72.92,153.75 L51.00,157.55 L43.33,136.67 L22.45,129.00 L26.25,107.08 L12.00,90.00 L26.25,72.92 L22.45,51.00 L43.33,43.33 L51.00,22.45 L72.92,26.25 Z"/>
+    </svg>
     <div class="open-source-panel reveal">
       <div class="open-source-icon">⚙️</div>
       <div>
-        <h2>Built in the open</h2>
+        <h2>Built in the open, for the people using it</h2>
+        <p>
+          This isn't being built to get acquired and shelved, or quietly turned into an ad
+          platform down the line. It's independent by intent — answerable to the people
+          actually using it, not to investors deciding what monetizes best.
+        </p>
         <p>
           Antikythera GPT Chat is open source, published on GitHub for anyone to read,
           run, fork, or improve. We think the tools people rely on for AI should be

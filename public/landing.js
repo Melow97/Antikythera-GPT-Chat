@@ -26,6 +26,20 @@ document.querySelectorAll('.nav-dropdown a').forEach((link) => {
   });
 });
 
+// --- Feature tab-switcher ("What's inside") ---
+document.querySelectorAll('.feature-tab').forEach((tab) => {
+  tab.addEventListener('click', () => {
+    const key = tab.dataset.feature;
+    document.querySelectorAll('.feature-tab').forEach((t) => {
+      t.classList.toggle('active', t === tab);
+      t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+    });
+    document.querySelectorAll('.feature-panel-content').forEach((panel) => {
+      panel.classList.toggle('active', panel.dataset.feature === key);
+    });
+  });
+});
+
 // ============================================================
 // Antikythera mechanism — continuous gear rotation + scroll tie-in
 // ============================================================
