@@ -42,6 +42,30 @@ page that does **real OAuth 2.0** against Google, Microsoft, GitHub, Slack, and 
    or paste its contents into chat.
 3. `npm start` → open `http://localhost:3000`.
 
+### Deploying (Render)
+
+1. Push the repo to GitHub (already gitignoring `.env`, `data/`, `clones/`, `.claude/`).
+2. On [render.com](https://render.com), create a new **Web Service** from that repo.
+   Language: Node. Build command: `npm install`. Start command: `npm start`.
+3. **Instance type**: the free tier cannot attach a persistent disk (see next step), so if
+   you want signups/connections to survive a restart, use at least the **Starter** paid tier.
+4. **Persistent disk** (Advanced settings): mount one at the app's `data/` directory (on
+   Render's default Node path, that's `/opt/render/project/src/data`) — otherwise
+   `data/users.json`, `data/connections.json`, and sessions all reset on every redeploy/
+   restart, silently logging everyone out and losing signups. 1GB is far more than enough
+   for these JSON files.
+5. **Environment variables** (Render dashboard, not `.env` — that file never leaves your
+   machine): set every value from `.env.example` that you use locally, plus update
+   `BASE_URL` to your actual Render URL (e.g. `https://your-app.onrender.com`) — this is
+   what OAuth redirect URIs and email links are built from.
+6. **Ollama**: a local Ollama install (`http://localhost:11434`) is *your own machine* —
+   Render's servers can't reach it. Set `OLLAMA_API_KEY` (a free Ollama Cloud/"Turbo" key
+   from [ollama.com/settings/keys](https://ollama.com/settings/keys), no card required) and
+   leave `OLLAMA_BASE_URL` blank so it points at `https://ollama.com` automatically.
+7. **Google OAuth**: if Google sign-in/Connections are configured, add the new redirect URIs
+   (`https://your-app.onrender.com/login/google/callback` and `.../auth/google/callback`) in
+   Google Cloud Console — the ones registered for `localhost` won't work on the live URL.
+
 ### Sign-in (gated access)
 
 `http://localhost:3000/` is now a public landing page; the chat app itself lives at `/app`
@@ -183,7 +207,10 @@ Two providers are supported:
 ## Requirements
 
 - Node.js (Playwright manages its own bundled Chromium — no system browser needed).
-- Run `npm install` once to pull in Playwright and its browser binary.
+- Run `npm install`, then `npm run clone:setup` once to download Playwright's browser binary.
+  This is a separate manual step (not an `npm install` postinstall hook) so that deploying
+  the main chat app — which never uses Playwright — doesn't download a full Chromium build
+  on every install.
 - An API key for whichever provider you use: `$env:OPENAI_API_KEY = "sk-..."` or
   `$env:DEEPSEEK_API_KEY = "sk-..."`
 - Never commit your API key or paste it into a shared/logged chat — treat it like a password.

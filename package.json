@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node server.js",
     "clone": "node clone-site.js",
-    "postinstall": "playwright install chromium"
+    "clone:setup": "playwright install chromium"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
