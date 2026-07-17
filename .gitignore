@@ -1,0 +1,8 @@
+clones/
+node_modules/
+.env
+data/connections.json
+data/users.json
+data/sessions/
+data/admin-settings.json
+.claude/

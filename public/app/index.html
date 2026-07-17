@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Antikythera GPT Chat</title>
+<link rel="icon" type="image/svg+xml" href="/logo.svg" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="brand"><img src="/logo.svg" class="brand-logo" alt="" /> Antikythera GPT Chat</span>
+      <button id="newChatBtn" class="new-chat-btn">+ New chat</button>
+    </div>
+    <div class="sidebar-footer">
+      <button class="nav-btn active" data-view="chat">💬 Chat</button>
+      <button class="nav-btn" data-view="history">🗂️ Saved chats</button>
+      <button class="nav-btn" data-view="connections">🔌 Connections</button>
+      <button class="nav-btn" data-view="settings">⚙️ Settings</button>
+      <button class="nav-btn admin-only hidden" id="adminNavBtn" data-view="admin">🛡️ Admin</button>
+      <div id="customSectionsList"></div>
+      <button id="addSectionBtn" class="add-section-btn">+ Add section</button>
+      <div id="addSectionMenu" class="add-section-menu hidden">
+        <button type="button" class="add-section-option" data-type="calendar">📅 Calendar</button>
+        <button type="button" class="add-section-option" data-type="notes">📝 Notes</button>
+        <button type="button" class="add-section-option" data-type="generic">📁 Generic</button>
+      </div>
+
+      <div id="userMenuWrapper" class="user-menu-wrapper hidden">
+        <button id="userMenuBtn" class="user-menu-btn" type="button">
+          <span class="user-avatar" id="userAvatar"></span>
+          <span class="user-menu-text">
+            <span class="user-name-row">
+              <span id="userEmail" class="user-email"></span>
+              <span id="userAdminBadge" class="admin-badge hidden">Admin</span>
+            </span>
+            <span class="user-plan">Free</span>
+          </span>
+        </button>
+        <div id="userMenuPopover" class="user-menu-popover hidden">
+          <input type="text" id="userMenuSearch" class="user-menu-search" placeholder="Search options..." />
+          <div class="user-menu-items" id="userMenuItems">
+            <button type="button" class="user-menu-item" data-action="personalization">🎨 Personalization</button>
+            <button type="button" class="user-menu-item" data-action="download" disabled title="Coming soon">⬇️ Download apps</button>
+            <a href="/login/logout" class="user-menu-item" data-action="logout">🚪 Log out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="top-bar">
+      <div class="model-picker" id="modelPicker">
+        <span class="model-picker-label">Antikythera GPT Chat</span>
+        <span class="model-picker-current" id="modelPickerCurrent">—</span>
+      </div>
+    </header>
+
+    <div id="announcementBanner" class="announcement-banner hidden"></div>
+
+    <section id="view-chat" class="view">
+      <div class="messages" id="messages">
+        <div class="empty-state">
+          <img src="/logo.svg" class="empty-state-logo" alt="" />
+          <h1>Antikythera GPT Chat</h1>
+          <p>Ask me anything, or connect an app from the sidebar.</p>
+        </div>
+      </div>
+      <form class="composer" id="composerForm">
+        <img src="/logo.svg" class="composer-logo" alt="" />
+        <div class="composer-box">
+          <div class="composer-toolbar">
+            <button type="button" id="attachBtn" class="tool-btn" title="Attach a text file">+</button>
+            <button type="button" id="connectBtn" class="tool-btn" title="Connect apps">🔌</button>
+            <button type="button" id="voiceBtn" class="tool-btn" title="Voice input">🎤</button>
+            <button type="button" id="deepSearchBtn" class="tool-btn text-tool-btn web-search-btn" title="Search the live web before answering">
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                <ellipse cx="12" cy="12" rx="4.2" ry="9.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                <line x1="2.5" y1="12" x2="21.5" y2="12" stroke="currentColor" stroke-width="1.6"/>
+                <line x1="3.6" y1="7.5" x2="20.4" y2="7.5" stroke="currentColor" stroke-width="1.6"/>
+                <line x1="3.6" y1="16.5" x2="20.4" y2="16.5" stroke="currentColor" stroke-width="1.6"/>
+              </svg>
+              Web search
+            </button>
+            <span id="attachedFileChip" class="attached-file-chip hidden"></span>
+          </div>
+          <div class="composer-input-row">
+            <textarea id="composerInput" placeholder="Message Antikythera..." rows="1"></textarea>
+            <button type="submit" id="sendBtn">Send</button>
+          </div>
+        </div>
+        <input type="file" id="fileInput" accept=".txt,.md,.csv,.json,.js,.ts,.py,.html,.css,.log" hidden />
+      </form>
+    </section>
+
+    <section id="view-history" class="view hidden">
+      <h2>🗂️ Saved chats</h2>
+      <p class="hint">Your conversations, stored in this browser. Click one to open it, or delete it with the trash icon.</p>
+      <div class="saved-chats-list" id="savedChatsList"></div>
+    </section>
+
+    <section id="view-settings" class="view hidden">
+      <h2>Settings</h2>
+      <p class="hint" id="profileEmailDisplay"></p>
+
+      <div class="settings-group">
+        <label for="themeSelect">Theme</label>
+        <select id="themeSelect">
+          <option value="dark">Dark</option>
+          <option value="light">Light</option>
+        </select>
+      </div>
+
+      <div class="settings-group">
+        <label for="systemPromptInput">Persona / system prompt</label>
+        <textarea id="systemPromptInput" rows="4" placeholder="You are a helpful assistant..."></textarea>
+      </div>
+
+      <button id="saveSettingsBtn" class="primary-btn">Save settings</button>
+      <p class="save-confirm hidden" id="saveConfirm">Saved.</p>
+
+      <div class="settings-group notification-pref">
+        <label class="checkbox-label">
+          <input type="checkbox" id="emailNotificationsCheckbox" />
+          Notify me about incoming tasks from my email
+        </label>
+        <p class="hint">
+          Preference only for now — saved to your account, but not yet wired to an active
+          email-monitoring pipeline.
+        </p>
+      </div>
+
+      <div class="settings-group shortcuts-group">
+        <label>Text shortcuts</label>
+        <p class="hint">
+          Type a trigger word followed by a space (or hit Enter) in the message box and it'll
+          expand into the full text below — like a text expander.
+        </p>
+        <div class="shortcuts-list" id="shortcutsList"></div>
+        <div class="shortcut-form">
+          <input type="text" id="shortcutTriggerInput" class="shortcut-trigger-input" placeholder="Trigger, e.g. az" />
+          <textarea id="shortcutExpansionInput" rows="2" placeholder="Text to expand into..."></textarea>
+          <button type="button" id="addShortcutBtn" class="primary-btn">+ Add shortcut</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-connections" class="view hidden">
+      <h2>Connections</h2>
+      <p class="hint">
+        Connect apps so the agent can use them. Each one needs a developer app registered with that
+        provider and its client ID/secret set in your local <code>.env</code> file — see README.
+      </p>
+      <div class="connections-list" id="connectionsList"></div>
+    </section>
+
+    <section id="view-models" class="view hidden">
+      <h2>⚙️ Models</h2>
+      <p class="hint">Antikythera GPT Chat runs on Ollama. Currently answering with:</p>
+      <p class="current-model-display" id="currentModelDisplayDock">—</p>
+      <p class="hint">
+        This is fixed for everyone — it isn't a user setting.
+      </p>
+    </section>
+
+    <section id="view-files" class="view hidden">
+      <h2>📁 Files</h2>
+      <p class="hint">
+        Files you attach in the composer are used as context for that one message only —
+        nothing is stored on a server. This is just a running list of what you've attached
+        during this browser session, for your own reference.
+      </p>
+      <div class="attached-files-list" id="attachedFilesList"></div>
+    </section>
+
+    <section id="view-admin" class="view hidden">
+      <h2>🛡️ Admin</h2>
+      <p class="hint">Visible only to the admin account — everyone else never sees this tab.</p>
+
+      <div class="admin-stats" id="adminStats">
+        <div class="admin-stat">
+          <div class="admin-stat-num" id="adminStatUsers">—</div>
+          <div class="admin-stat-label">Signed-up users</div>
+        </div>
+        <div class="admin-stat">
+          <div class="admin-stat-num" id="adminStatConnections">—</div>
+          <div class="admin-stat-label">Connected apps</div>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <label for="adminModelInput">Default Ollama model</label>
+        <input type="text" id="adminModelInput" placeholder="e.g. llama3.2" />
+        <p class="hint">Used for every chat request unless something else overrides it.</p>
+      </div>
+
+      <div class="settings-group">
+        <label for="adminAnnouncementInput">Site announcement</label>
+        <textarea id="adminAnnouncementInput" rows="3" placeholder="Shown as a banner to every signed-in user. Leave blank to hide it."></textarea>
+      </div>
+
+      <button id="adminSaveBtn" class="primary-btn">Save admin settings</button>
+      <p class="save-confirm hidden" id="adminSaveConfirm">Saved.</p>
+    </section>
+  </main>
+
+  <nav class="bottom-dock" id="bottomDock">
+    <button type="button" class="dock-btn active" data-view="chat">
+      <span class="dock-icon">🏠</span><span class="dock-label">Home</span>
+    </button>
+    <button type="button" class="dock-btn" data-view="history">
+      <span class="dock-icon">💬</span><span class="dock-label">Chat</span>
+    </button>
+    <button type="button" class="dock-btn" data-view="models">
+      <span class="dock-icon">⚙️</span><span class="dock-label">Models</span>
+    </button>
+    <button type="button" class="dock-btn" data-view="files">
+      <span class="dock-icon">📁</span><span class="dock-label">Files</span>
+    </button>
+    <button type="button" class="dock-btn" data-view="settings">
+      <span class="dock-icon">👤</span><span class="dock-label">Profile</span>
+    </button>
+  </nav>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

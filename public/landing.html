@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Antikythera GPT Chat</title>
+<link rel="icon" type="image/svg+xml" href="/logo.svg" />
+<link rel="stylesheet" href="/landing.css" />
+</head>
+<body>
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-brand">
+      <img src="/logo.svg" class="nav-logo" alt="" />
+      Antikythera GPT Chat
+    </a>
+    <nav class="nav-links">
+      <a href="#about" class="nav-link-simple">About</a>
+      <div class="nav-item">
+        <button type="button" class="nav-link">Features ▾</button>
+        <div class="nav-dropdown">
+          <a href="#features">Multi-model chat</a>
+          <a href="#features">App connections</a>
+          <a href="#features">Deep web search</a>
+          <a href="#features">Customizable workspace</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button type="button" class="nav-link">Solutions ▾</button>
+        <div class="nav-dropdown">
+          <a href="#solutions">Education &amp; coding</a>
+          <a href="#solutions">IT &amp; operations</a>
+          <a href="#solutions">Security &amp; investigation</a>
+          <a href="#solutions">Content moderation support</a>
+        </div>
+      </div>
+      <a href="#pricing" class="nav-link-simple">Pricing</a>
+      <a href="#notifications" class="nav-link-simple">Notifications</a>
+    </nav>
+    <div class="nav-auth">
+      <a href="/login.html" class="nav-link-simple">Log in</a>
+      <a href="/signup.html" class="nav-cta">Sign up for free</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="top" class="hero">
+    <div class="mechanism-stage" id="mechanismStage">
+      <svg viewBox="0 0 400 400" class="mechanism-svg" aria-hidden="true">
+        <circle class="orbit-ring ring-outer" cx="200" cy="200" r="192" />
+        <circle class="orbit-ring ring-inner" cx="200" cy="200" r="176" />
+        <g class="orbit-satellites" id="orbitSatellites">
+          <circle class="orbit-dot" cx="200" cy="8" r="4" />
+          <circle class="orbit-dot" cx="392" cy="200" r="4" />
+          <circle class="orbit-dot" cx="200" cy="392" r="4" />
+          <circle class="orbit-dot" cx="8" cy="200" r="4" />
+        </g>
+
+        <g transform="translate(280,280)">
+          <g class="gear gear-small" id="gearSmall">
+            <path class="gear-tooth" d="M50.00,8.00 L63.01,18.59 L79.70,20.30 L81.41,36.99 L92.00,50.00 L81.41,63.01 L79.70,79.70 L63.01,81.41 L50.00,92.00 L36.99,81.41 L20.30,79.70 L18.59,63.01 L8.00,50.00 L18.59,36.99 L20.30,20.30 L36.99,18.59 Z" />
+            <circle class="gear-face" cx="50" cy="50" r="34" />
+            <g class="bolt-holes">
+              <circle cx="50.00" cy="26.00" r="2.5" />
+              <circle cx="74.00" cy="50.00" r="2.5" />
+              <circle cx="50.00" cy="74.00" r="2.5" />
+              <circle cx="26.00" cy="50.00" r="2.5" />
+            </g>
+          </g>
+        </g>
+
+        <g class="gear gear-medium" id="gearMedium">
+          <path class="gear-tooth" d="M90.00,12.00 L107.08,26.25 L129.00,22.45 L136.67,43.33 L157.55,51.00 L153.75,72.92 L168.00,90.00 L153.75,107.08 L157.55,129.00 L136.67,136.67 L129.00,157.55 L107.08,153.75 L90.00,168.00 L72.92,153.75 L51.00,157.55 L43.33,136.67 L22.45,129.00 L26.25,107.08 L12.00,90.00 L26.25,72.92 L22.45,51.00 L43.33,43.33 L51.00,22.45 L72.92,26.25 Z" />
+          <circle class="gear-face" cx="90" cy="90" r="58" />
+          <g class="bolt-holes">
+            <circle cx="90.00" cy="42.00" r="4" />
+            <circle cx="131.57" cy="66.00" r="4" />
+            <circle cx="131.57" cy="114.00" r="4" />
+            <circle cx="90.00" cy="138.00" r="4" />
+            <circle cx="48.43" cy="114.00" r="4" />
+            <circle cx="48.43" cy="66.00" r="4" />
+          </g>
+        </g>
+
+        <g class="gear gear-large" id="gearLarge">
+          <path class="gear-tooth" d="M200.00,30.00 L228.87,54.84 L265.06,42.94 L282.22,76.94 L320.21,79.79 L323.06,117.78 L357.06,134.94 L345.16,171.13 L370.00,200.00 L345.16,228.87 L357.06,265.06 L323.06,282.22 L320.21,320.21 L282.22,323.06 L265.06,357.06 L228.87,345.16 L200.00,370.00 L171.13,345.16 L134.94,357.06 L117.78,323.06 L79.79,320.21 L76.94,282.22 L42.94,265.06 L54.84,228.87 L30.00,200.00 L54.84,171.13 L42.94,134.94 L76.94,117.78 L79.79,79.79 L117.78,76.94 L134.94,42.94 L171.13,54.84 Z" />
+          <circle class="gear-face" cx="200" cy="200" r="145" />
+          <g class="bolt-holes">
+            <circle cx="200.00" cy="90.00" r="6" />
+            <circle cx="277.78" cy="122.22" r="6" />
+            <circle cx="310.00" cy="200.00" r="6" />
+            <circle cx="277.78" cy="277.78" r="6" />
+            <circle cx="200.00" cy="310.00" r="6" />
+            <circle cx="122.22" cy="277.78" r="6" />
+            <circle cx="90.00" cy="200.00" r="6" />
+            <circle cx="122.22" cy="122.22" r="6" />
+          </g>
+        </g>
+      </svg>
+
+      <button type="button" class="start-chat-btn" id="startChatBtn" data-href="/signup.html">
+        <span class="start-chat-icon">▶</span>
+        <span>Start Chat</span>
+      </button>
+    </div>
+
+    <h1>Welcome to Antikythera GPT Chat</h1>
+    <p class="hero-tagline">
+      A learning platform for education, coding, and scripting — built around chat with AI
+      you can configure, extend, and connect to your own tools.
+    </p>
+    <p class="hero-subtext">
+      Flex it toward IT operations, security investigation, or content moderation support —
+      bring your own tools and sections for the workflows that matter to you.
+    </p>
+    <p class="hero-signin-note">"Start Chat" takes you to sign up — with email or Google.</p>
+
+    <div id="errorBanner" class="error-banner hidden"></div>
+
+    <a href="#features" class="scroll-cue">See what's inside ↓</a>
+  </section>
+
+  <section id="preview" class="section">
+    <h2 class="reveal">A look inside</h2>
+    <div class="preview-frame reveal">
+      <div class="preview-titlebar">
+        <span class="preview-dot"></span>
+        <span class="preview-dot"></span>
+        <span class="preview-dot"></span>
+      </div>
+      <div class="preview-body">
+        <div class="preview-sidebar">
+          <div class="preview-brand">
+            <img src="/logo.svg" alt="" />
+            Antikythera GPT Chat
+          </div>
+          <div class="preview-new-chat">+ New chat</div>
+          <div class="preview-convo active">Debugging a Python script</div>
+          <div class="preview-convo">SOP for new server setup</div>
+          <div class="preview-convo">Explain recursion simply</div>
+          <div class="preview-nav">
+            <span>💬 Chat</span>
+            <span>🔌 Connections</span>
+            <span>⚙️ Settings</span>
+          </div>
+        </div>
+        <div class="preview-main">
+          <div class="preview-topbar">Antikythera GPT Chat <span>Ollama · llama3.2</span></div>
+          <div class="preview-messages">
+            <div class="preview-bubble user">Can you help me write a bash script that backs up a folder daily?</div>
+            <div class="preview-bubble assistant">Sure — here's a simple version using cron and tar, with a rolling
+              7-day retention so it doesn't fill up your disk. Want me to add compression or remote upload too?</div>
+          </div>
+          <div class="preview-composer">
+            <span class="preview-composer-tools">+ 🔌 🎤 🔎 Deep search</span>
+            <span class="preview-composer-input">Message Antikythera GPT Chat...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="section">
+    <h2 class="reveal">What's inside</h2>
+    <div class="card-grid">
+      <div class="card reveal">
+        <div class="card-icon">💬</div>
+        <h3>Multi-model chat</h3>
+        <p>Talk to OpenAI, DeepSeek, or run models fully locally/offline with Ollama — switch
+          any time from a quick picker at the top of the app.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🔌</div>
+        <h3>App connections</h3>
+        <p>Real OAuth connections to Google, Microsoft, GitHub, Slack, and Zoom, so the agent
+          can work with the tools you already use.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🔎</div>
+        <h3>Deep web search</h3>
+        <p>Toggle on live web search before a message sends, and get answers grounded in
+          current sources with citations.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🧩</div>
+        <h3>Customizable workspace</h3>
+        <p>Add your own sidebar sections — notes, a calendar, or freeform space — and shape
+          the app around how you actually work.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="solutions" class="section section-alt">
+    <h2 class="reveal">Built to flex to your work</h2>
+    <div class="card-grid">
+      <div class="card reveal">
+        <div class="card-icon">🎓</div>
+        <h3>Education &amp; coding</h3>
+        <p>Learn concepts, debug code, and work through scripting problems with an AI that
+          explains its reasoning as it goes.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🛠️</div>
+        <h3>IT &amp; operations</h3>
+        <p>Triage tickets, draft documentation and SOPs, scaffold environments, and work
+          through troubleshooting steps faster.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🔐</div>
+        <h3>Security &amp; investigation</h3>
+        <p>Bring your own research tools and sections for scripting, log review, and
+          investigation workflows.</p>
+      </div>
+      <div class="card reveal">
+        <div class="card-icon">🛡️</div>
+        <h3>Content moderation support</h3>
+        <p>Help your review team triage, summarize, and document flagged content faster and
+          more consistently — the tool assists human reviewers, it doesn't replace their
+          judgment.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="section">
+    <h2 class="reveal">Pricing</h2>
+    <p class="pricing-subtitle reveal">
+      Antikythera GPT Chat is new and currently 100% free while we build it out —
+      here's what's live today, and what's planned next.
+    </p>
+    <div class="pricing-grid">
+      <div class="pricing-card pricing-card-active reveal">
+        <div class="pricing-card-name">Free</div>
+        <p class="pricing-card-desc">Everything the app currently offers</p>
+        <div class="pricing-card-price">$0<span>/ month</span></div>
+        <a href="/signup.html" class="pricing-cta">Get started</a>
+        <ul class="pricing-features">
+          <li>Chat via Ollama — local or your own Ollama Cloud key</li>
+          <li>Deep web search with citations (free Ollama account key)</li>
+          <li>Flights &amp; hotels lookup, auto-detected from your message</li>
+          <li>Real OAuth connections: Google, Microsoft, GitHub, Slack, Zoom</li>
+          <li>Custom personas, text shortcuts, and workspace sections</li>
+          <li>Unlimited messages — this is a self-run instance, not a metered service</li>
+        </ul>
+      </div>
+      <div class="pricing-card pricing-card-soon reveal">
+        <div class="pricing-card-name">Coming soon</div>
+        <p class="pricing-card-desc">Ideas on the roadmap — not built yet, nothing to buy today</p>
+        <div class="pricing-card-price">TBD</div>
+        <span class="pricing-cta pricing-cta-disabled">Not available yet</span>
+        <ul class="pricing-features pricing-features-soon">
+          <li>Server-side chat history (synced across devices)</li>
+          <li>Hosted/managed version — no setup or Ollama install required</li>
+          <li>Team &amp; multi-admin workspaces</li>
+          <li>Higher-tier hosted models for faster, heavier requests</li>
+        </ul>
+      </div>
+    </div>
+    <p class="pricing-footnote reveal">
+      This project is self-hosted and open source — running it costs you nothing but your
+      own machine's resources and any optional third-party API keys you choose to add.
+    </p>
+  </section>
+
+  <section id="notifications" class="section">
+    <div class="notify-panel reveal">
+      <div class="notify-icon">🔔</div>
+      <div>
+        <h2>Stay on top of incoming work</h2>
+        <p>
+          Once signed in, you can opt in to notifications about incoming tasks tied to your
+          work email — or just personal reminders, your call. Turn it on any time from
+          Settings after you sign in.
+        </p>
+        <p class="notify-note">
+          This is an opt-in preference you control in-app — it's not automatically enabled,
+          and it's a notification preference today rather than a fully automated inbox agent.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section section-alt">
+    <div class="open-source-panel reveal">
+      <div class="open-source-icon">⚙️</div>
+      <div>
+        <h2>Built in the open</h2>
+        <p>
+          Antikythera GPT Chat is open source, published on GitHub for anyone to read,
+          run, fork, or improve. We think the tools people rely on for AI should be
+          inspectable rather than opaque — code you can actually look at, not just a
+          promise from a vendor.
+        </p>
+        <p>
+          If that's a future worth building, come take a look at the repository: read
+          the code, file an issue, suggest a feature, or open a pull request. Whether
+          you're kicking the tires as a user or digging into the source as a
+          contributor, it's all welcome.
+        </p>
+        <a href="https://github.com/Melow97/Antikythera-GPT-Chat" class="github-cta" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+              0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
+              -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66
+              .07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15
+              -.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0
+              1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82
+              1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01
+              1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+          </svg>
+          View the code on GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="landing-footer">
+  <img src="/logo.svg" class="footer-logo" alt="" />
+  <span>Antikythera GPT Chat — chat, connections, and your own tools, in one place.</span>
+  <div class="footer-social">
+    <a href="https://github.com/Melow97/Antikythera-GPT-Chat" class="footer-social-link" target="_blank" rel="noopener" aria-label="GitHub">
+      <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true" fill="currentColor">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+          0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
+          -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66
+          .07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15
+          -.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0
+          1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82
+          1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01
+          1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+      </svg>
+      GitHub
+    </a>
+    <a href="https://x.com/Antikythera67" class="footer-social-link" target="_blank" rel="noopener" aria-label="X (Twitter)">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="currentColor">
+        <path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.22-6.83-5.97 6.83H1.66l7.74-8.84L1.25 2.25h6.83l4.72 6.24 5.44-6.24Zm-1.16 17.52h1.83L7.02 4.13H5.06l11.99 15.64Z"/>
+      </svg>
+      X
+    </a>
+  </div>
+</footer>
+
+<div class="iris-overlay" id="irisOverlay"></div>
+
+<script src="/landing.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Verify your email — Antikythera GPT Chat</title>
+<link rel="icon" type="image/svg+xml" href="/logo.svg" />
+<link rel="stylesheet" href="/landing.css" />
+<link rel="stylesheet" href="/auth.css" />
+</head>
+<body>
+<div class="auth-page">
+  <div class="auth-card">
+    <a href="/" class="auth-brand">
+      <img src="/logo.svg" alt="" />
+      Antikythera GPT Chat
+    </a>
+    <h1>Check your email</h1>
+    <p class="auth-hint" id="codeSentTo" style="margin: -14px 0 18px; text-align: center;">
+      Enter the 6-digit code we sent you.
+    </p>
+
+    <div id="authError" class="auth-error hidden"></div>
+    <div id="authSuccess" class="auth-error hidden" style="background: rgba(116,173,126,0.15); border-color: #74ad7e; color: #74ad7e;"></div>
+
+    <form class="auth-form" id="verifyCodeForm">
+      <div class="auth-field">
+        <label for="code">Verification code</label>
+        <input type="text" id="code" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="one-time-code" required
+          style="letter-spacing: 6px; font-size: 20px; text-align: center;" />
+        <p class="auth-hint">Expires 10 minutes after signup.</p>
+      </div>
+      <button type="submit" class="auth-submit" id="submitBtn">Verify</button>
+    </form>
+
+    <p class="auth-switch">
+      Didn't get it? <a href="#" id="resendCodeLink">Resend code</a>
+    </p>
+  </div>
+</div>
+
+<script src="/auth.js"></script>
+</body>
+</html>
