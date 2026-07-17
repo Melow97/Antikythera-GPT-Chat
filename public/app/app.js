@@ -194,6 +194,9 @@ function renderMessages() {
     if (m.transferResults) {
       renderTransferResultsCard(container, m.transferResults);
     }
+    if (m.reviewsResults) {
+      renderReviewsResultsCard(container, m.reviewsResults);
+    }
   });
   container.scrollTop = container.scrollHeight;
 }
@@ -537,6 +540,86 @@ function renderTransferResultsCard(container, data) {
   );
 }
 
+// Looks for "review(s) for/of/about <place>". Same deliberately-simple philosophy as the
+// other parsers above.
+function parseReviewsQuery(text) {
+  const match = text.match(/\breviews?\b[\s\S]{0,10}?(?:for|of|about)\s+([A-Za-z][\w\s'&.-]{1,40}?)(?:[.,!?]|$)/i);
+  if (!match) return null;
+  return { place: match[1].trim() };
+}
+
+// The one results card with real photos — everything else in this app (Amadeus hotels
+// included) can't legally source images, so this uses TripAdvisor's own photo data instead.
+function renderReviewsResultsCard(container, data) {
+  const card = document.createElement('div');
+  card.className = 'flight-results-card';
+
+  const header = document.createElement('div');
+  header.className = 'flight-results-header';
+  header.textContent = data.found ? `⭐ ${data.name}` : `⭐ Reviews: couldn't find "${data.place}"`;
+  card.appendChild(header);
+
+  if (!data.found) {
+    container.appendChild(card);
+    container.scrollTop = container.scrollHeight;
+    return;
+  }
+
+  if (data.rating || data.address) {
+    const meta = document.createElement('div');
+    meta.className = 'flight-row';
+    meta.innerHTML = `
+      <div class="flight-row-info">
+        ${data.rating ? `<div class="flight-airline">${'★'.repeat(Math.round(data.rating))} ${escapeHtml(String(data.rating))} ${data.numReviews ? `(${data.numReviews} reviews)` : ''}</div>` : ''}
+        ${data.address ? `<div class="flight-meta">${escapeHtml(data.address)}</div>` : ''}
+      </div>
+    `;
+    card.appendChild(meta);
+  }
+
+  if (data.photos?.length) {
+    const photoStrip = document.createElement('div');
+    photoStrip.className = 'review-photo-strip';
+    data.photos.forEach((url) => {
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = `${data.name} photo`;
+      img.loading = 'lazy';
+      img.className = 'review-photo';
+      photoStrip.appendChild(img);
+    });
+    card.appendChild(photoStrip);
+  }
+
+  data.reviews?.forEach((r) => {
+    const row = document.createElement('div');
+    row.className = 'flight-row';
+    row.innerHTML = `
+      <div class="flight-row-info">
+        <div class="flight-airline">${r.rating ? '★'.repeat(Math.round(r.rating)) + ' ' : ''}${escapeHtml(r.title || 'Review')} — ${escapeHtml(r.author)}</div>
+        ${r.text ? `<div class="flight-meta">${escapeHtml(r.text)}</div>` : ''}
+      </div>
+    `;
+    card.appendChild(row);
+  });
+
+  if (data.webUrl) {
+    const footer = document.createElement('div');
+    footer.className = 'flight-row';
+    const link = document.createElement('a');
+    link.href = data.webUrl;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.className = 'flight-book-link';
+    link.textContent = 'View on TripAdvisor ↗';
+    footer.appendChild(link);
+    card.appendChild(footer);
+  }
+
+  container.appendChild(card);
+  container.scrollTop = container.scrollHeight;
+}
+
 async function sendMessage(rawText) {
   const conversation = getActiveConversation();
   const currentAttachment = attachedFile;
@@ -734,6 +817,34 @@ async function sendMessage(rawText) {
           }
         } catch {
           // transfer search failed — proceed without it
+        }
+      }
+    }
+
+    {
+      const parsed = parseReviewsQuery(rawText);
+      if (parsed) {
+        try {
+          const reviewsRes = await fetch(`/api/tripadvisor/search?place=${encodeURIComponent(parsed.place)}`);
+          const reviewsData = await reviewsRes.json();
+          if (reviewsRes.ok) {
+            conversation.messages[conversation.messages.length - 1].reviewsResults = reviewsData;
+            saveConversations(conversations);
+            stopThinking();
+            renderMessages();
+            stopThinking = showThinkingIndicator(document.getElementById('messages'), THINKING_PHRASES);
+
+            if (reviewsData.found) {
+              const reviewsText = (reviewsData.reviews || [])
+                .map((r, i) => `${i + 1}. ${r.rating ? r.rating + '/5' : ''} "${r.title || ''}" by ${r.author}: ${r.text || ''}`)
+                .join('\n');
+              augmentedContent = `${augmentedContent}\n\n--- Live TripAdvisor data for ${reviewsData.name} ---\nRating: ${reviewsData.rating ?? '?'}/5 (${reviewsData.numReviews ?? '?'} reviews)\n${reviewsText}\n\nThis is real current review data, already shown to the user as a card (with photos) above your reply — summarize the general sentiment briefly rather than re-listing every review.`;
+            } else {
+              augmentedContent = `${augmentedContent}\n\n(Review lookup ran for "${parsed.place}" but no matching location was found — say so and ask for a clearer place name.)`;
+            }
+          }
+        } catch {
+          // reviews lookup failed — proceed without it
         }
       }
     }

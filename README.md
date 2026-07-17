@@ -126,6 +126,13 @@ along with conversation history — there's no server-side chat history yet.
 - **Currency conversion** — no toggle needed; triggers on "&lt;amount&gt; &lt;CODE&gt; to
   &lt;CODE&gt;", e.g. *"convert 100 USD to EUR"*. Runs on the free, keyless tier of
   [exchangerate-api.com](https://www.exchangerate-api.com/) (open.er-api.com).
+- **Reviews & photos** — no toggle needed; triggers on "review(s) for/of/about &lt;place&gt;",
+  e.g. *"reviews for the Eiffel Tower"*. Runs on
+  [TripAdvisor's Content API](https://tripadvisor-content-api.readme.io/) (self-serve, needs
+  `TRIPADVISOR_API_KEY` — first 5,000 calls/month are free, but unlike the keyless services
+  above it does require a billing card on file). This is also the one source of real photos
+  in the app: Amadeus no longer distributes hotel images through its self-service API at all,
+  so this fills that gap instead.
 
 ### Connections (real OAuth)
 

@@ -126,13 +126,17 @@ router.get('/search', async (req, res) => {
         });
       }
 
-      const transfers = (data.data || []).slice(0, 5).map((offer) => ({
-        vehicleType: offer.vehicle?.description || offer.vehicle?.category || 'Vehicle',
-        provider: offer.serviceProvider?.name || null,
-        price: offer.quotation?.monetaryAmount,
-        currency: offer.quotation?.currencyCode,
-        durationMinutes: offer.transfer?.duration ? Number(offer.transfer.duration.replace(/[^\d]/g, '')) || null : null,
-      }));
+      const transfers = (data.data || [])
+        .map((offer) => ({
+          vehicleType: offer.vehicle?.description || offer.vehicle?.category || 'Vehicle',
+          provider: offer.serviceProvider?.name || null,
+          price: offer.quotation?.monetaryAmount,
+          currency: offer.quotation?.currencyCode,
+          durationMinutes: offer.transfer?.duration ? Number(offer.transfer.duration.replace(/[^\d]/g, '')) || null : null,
+        }))
+        // Cheapest first, same as hotels — sort before slicing.
+        .sort((a, b) => (parseFloat(a.price) || Infinity) - (parseFloat(b.price) || Infinity))
+        .slice(0, 5);
 
       res.json({
         from: from.toUpperCase(),

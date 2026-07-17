@@ -1144,6 +1144,24 @@ h2 {
   color: var(--accent-text);
 }
 
+/* --- TripAdvisor review photo strip --- */
+
+.review-photo-strip {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  overflow-x: auto;
+}
+
+.review-photo {
+  width: 96px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background: var(--bg-input);
+}
+
 /* --- Admin --- */
 
 .admin-only.hidden {

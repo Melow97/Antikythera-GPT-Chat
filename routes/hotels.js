@@ -134,7 +134,6 @@ router.get('/search', async (req, res) => {
 
       const hotels = (offersData.data || [])
         .filter((entry) => entry.offers?.length)
-        .slice(0, 8)
         .map((entry) => {
           const offer = entry.offers[0];
           return {
@@ -146,7 +145,11 @@ router.get('/search', async (req, res) => {
             checkin,
             checkout,
           };
-        });
+        })
+        // Cheapest first — sort before slicing so the top 8 shown are actually the 8
+        // cheapest, not just whatever order Amadeus happened to return.
+        .sort((a, b) => (parseFloat(a.price) || Infinity) - (parseFloat(b.price) || Infinity))
+        .slice(0, 8);
 
       res.json({ city, checkin, checkout, hotels, bookingUrl: bookingSearchLink(city, checkin, checkout) });
     } finally {

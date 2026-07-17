@@ -15,6 +15,7 @@ import hotelsRouter from './routes/hotels.js';
 import transfersRouter from './routes/transfers.js';
 import weatherRouter from './routes/weather.js';
 import currencyRouter from './routes/currency.js';
+import tripadvisorRouter from './routes/tripadvisor.js';
 import loginRouter from './routes/login.js';
 import preferencesRouter from './routes/preferences.js';
 import adminRouter from './routes/admin.js';
@@ -104,6 +105,7 @@ app.use('/api/hotels', requireAuth, hotelsRouter);
 app.use('/api/transfers', requireAuth, transfersRouter);
 app.use('/api/weather', requireAuth, weatherRouter);
 app.use('/api/currency', requireAuth, currencyRouter);
+app.use('/api/tripadvisor', requireAuth, tripadvisorRouter);
 app.use('/api/preferences', requireAuth, preferencesRouter);
 app.use('/api/admin', requireAuth, requireAdmin, adminRouter);
 // TripIt uses OAuth 1.0a and has its own start/callback router — mounted at the more
