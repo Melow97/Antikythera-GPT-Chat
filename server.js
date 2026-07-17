@@ -12,9 +12,13 @@ import authRouter from './routes/auth.js';
 import searchRouter from './routes/search.js';
 import flightsRouter from './routes/flights.js';
 import hotelsRouter from './routes/hotels.js';
+import transfersRouter from './routes/transfers.js';
+import weatherRouter from './routes/weather.js';
+import currencyRouter from './routes/currency.js';
 import loginRouter from './routes/login.js';
 import preferencesRouter from './routes/preferences.js';
 import adminRouter from './routes/admin.js';
+import tripitRouter from './routes/tripit.js';
 import { getAdminSettings } from './lib/adminSettings.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -97,8 +101,15 @@ app.use('/api/connections', requireAuth, connectionsRouter);
 app.use('/api/search', requireAuth, searchRouter);
 app.use('/api/flights', requireAuth, flightsRouter);
 app.use('/api/hotels', requireAuth, hotelsRouter);
+app.use('/api/transfers', requireAuth, transfersRouter);
+app.use('/api/weather', requireAuth, weatherRouter);
+app.use('/api/currency', requireAuth, currencyRouter);
 app.use('/api/preferences', requireAuth, preferencesRouter);
 app.use('/api/admin', requireAuth, requireAdmin, adminRouter);
+// TripIt uses OAuth 1.0a and has its own start/callback router — mounted at the more
+// specific /auth/tripit path BEFORE the generic /auth OAuth 2.0 router so it takes
+// precedence for that provider.
+app.use('/auth/tripit', requireAuth, tripitRouter);
 app.use('/auth', requireAuth, authRouter);
 
 app.use(express.static(path.join(__dirname, 'public')));

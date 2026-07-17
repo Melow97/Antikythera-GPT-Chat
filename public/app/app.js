@@ -185,6 +185,15 @@ function renderMessages() {
     if (m.hotelResults) {
       renderHotelResultsCard(container, m.hotelResults);
     }
+    if (m.weatherResults) {
+      renderWeatherResultsCard(container, m.weatherResults);
+    }
+    if (m.currencyResults) {
+      renderCurrencyResultsCard(container, m.currencyResults);
+    }
+    if (m.transferResults) {
+      renderTransferResultsCard(container, m.transferResults);
+    }
   });
   container.scrollTop = container.scrollHeight;
 }
@@ -409,6 +418,125 @@ function renderHotelResultsCard(container, data) {
   container.scrollTop = container.scrollHeight;
 }
 
+// Shared renderer for the simpler auto-detect cards (weather, currency, transfers) — reuses
+// the same CSS classes as the flight/hotel cards above rather than introducing new ones.
+function renderInfoCard(container, headerText, rows) {
+  const card = document.createElement('div');
+  card.className = 'flight-results-card';
+
+  const header = document.createElement('div');
+  header.className = 'flight-results-header';
+  header.textContent = headerText;
+  card.appendChild(header);
+
+  rows.forEach((r) => {
+    const row = document.createElement('div');
+    row.className = 'flight-row';
+
+    const info = document.createElement('div');
+    info.className = 'flight-row-info';
+    info.innerHTML = `
+      <div class="flight-airline">${escapeHtml(r.primary)}</div>
+      ${r.secondary ? `<div class="flight-route">${escapeHtml(r.secondary)}</div>` : ''}
+      ${r.meta ? `<div class="flight-meta">${escapeHtml(r.meta)}</div>` : ''}
+    `;
+    row.appendChild(info);
+
+    if (r.value) {
+      const priceBook = document.createElement('div');
+      priceBook.className = 'flight-row-price';
+      const priceEl = document.createElement('div');
+      priceEl.className = 'flight-price';
+      priceEl.textContent = r.value;
+      priceBook.appendChild(priceEl);
+      row.appendChild(priceBook);
+    }
+
+    card.appendChild(row);
+  });
+
+  container.appendChild(card);
+  container.scrollTop = container.scrollHeight;
+}
+
+// Looks for "weather in/for <place>", optionally with "on YYYY-MM-DD". Same deliberately-
+// simple philosophy as the flight/hotel parsers above.
+function parseWeatherQuery(text) {
+  const match = text.match(
+    /\bweather\b[\s\S]{0,10}?(?:in|for|at)\s+([A-Za-z][A-Za-z\s]{1,28}?)(?:\s+on\s+(\d{4}-\d{2}-\d{2})|[.,!?]|$)/i
+  );
+  if (!match) return null;
+  return { place: match[1].trim(), date: match[2] || null };
+}
+
+function renderWeatherResultsCard(container, data) {
+  if (!data.found) {
+    renderInfoCard(container, `🌤️ Weather: couldn't find "${data.place}"`, []);
+    return;
+  }
+  renderInfoCard(
+    container,
+    `🌤️ Weather in ${data.resolvedName}`,
+    data.days.map((d) => ({
+      primary: d.date,
+      secondary: d.condition,
+      meta: d.precipChancePercent != null ? `${Math.round(d.precipChancePercent)}% chance of precipitation` : '',
+      value: d.highC != null && d.lowC != null ? `${Math.round(d.highC)}° / ${Math.round(d.lowC)}°C` : '',
+    }))
+  );
+}
+
+// Looks for "<amount> <CODE> to/in <CODE>", e.g. "100 USD to EUR" or "convert 50 GBP to JPY".
+function parseCurrencyQuery(text) {
+  const match = text.match(/\b(\d+(?:\.\d+)?)\s*([A-Za-z]{3})\s*(?:to|in|->|→)\s*([A-Za-z]{3})\b/i);
+  if (!match) return null;
+  return { amount: match[1], from: match[2].toUpperCase(), to: match[3].toUpperCase() };
+}
+
+function renderCurrencyResultsCard(container, data) {
+  renderInfoCard(container, `💱 Currency: ${data.amount} ${data.from} → ${data.to}`, [
+    {
+      primary: `${data.converted} ${data.to}`,
+      secondary: `1 ${data.from} = ${data.rate} ${data.to}`,
+      meta: data.asOf ? `Rates as of ${data.asOf}` : '',
+    },
+  ]);
+}
+
+// Requires the literal word "transfer" to disambiguate from a flight query, since both
+// share the "XXX to <place> ... date" shape — without that keyword this would misfire on
+// nearly every flight message too.
+function parseTransferQuery(text) {
+  if (!/\btransfer\b/i.test(text)) return null;
+  const match = text.match(
+    /\b([A-Za-z]{3})\b[\s\S]{0,10}?(?:to|-|→|>)\s*([A-Za-z][A-Za-z\s]{1,28}?)(?:\s+on)?\s+(\d{4}-\d{2}-\d{2})(?:[T\s](\d{2}:\d{2}(?::\d{2})?))?/i
+  );
+  if (!match) return null;
+  const time = match[4] ? (match[4].length === 5 ? `${match[4]}:00` : match[4]) : '10:00:00';
+  return { from: match[1].toUpperCase(), to: match[2].trim(), datetime: `${match[3]}T${time}` };
+}
+
+function renderTransferResultsCard(container, data) {
+  if (!data.found) {
+    renderInfoCard(container, `🚗 Transfer: couldn't resolve "${data.to}"`, []);
+    return;
+  }
+  if (!data.transfers.length) {
+    renderInfoCard(container, `🚗 Transfers: ${data.from} → ${data.to}`, []);
+    return;
+  }
+  renderInfoCard(
+    container,
+    `🚗 Transfers: ${data.from} → ${data.to} on ${data.datetime.slice(0, 10)}`,
+    data.transfers.map((t) => ({
+      primary: t.vehicleType,
+      secondary: t.provider || '',
+      meta: t.durationMinutes ? `${t.durationMinutes} min` : '',
+      value: t.price ? `${t.price} ${t.currency}` : 'Price unavailable',
+    }))
+  );
+}
+
 async function sendMessage(rawText) {
   const conversation = getActiveConversation();
   const currentAttachment = attachedFile;
@@ -528,6 +656,88 @@ async function sendMessage(rawText) {
       }
     }
 
+    {
+      const parsed = parseWeatherQuery(rawText);
+      if (parsed) {
+        try {
+          const params = new URLSearchParams({ place: parsed.place });
+          if (parsed.date) params.set('date', parsed.date);
+          const weatherRes = await fetch(`/api/weather/search?${params.toString()}`);
+          const weatherData = await weatherRes.json();
+          if (weatherRes.ok) {
+            conversation.messages[conversation.messages.length - 1].weatherResults = weatherData;
+            saveConversations(conversations);
+            stopThinking();
+            renderMessages();
+            stopThinking = showThinkingIndicator(document.getElementById('messages'), THINKING_PHRASES);
+
+            if (weatherData.found) {
+              const daysText = weatherData.days
+                .map((d) => `${d.date}: ${d.condition}, ${d.highC}°/${d.lowC}°C, ${d.precipChancePercent ?? '?'}% precip`)
+                .join('\n');
+              augmentedContent = `${augmentedContent}\n\n--- Live weather forecast for ${weatherData.resolvedName} ---\n${daysText}\n\nThis is a real current forecast, already shown to the user as a card above your reply — summarize it briefly rather than re-listing every detail.`;
+            } else {
+              augmentedContent = `${augmentedContent}\n\n(Weather lookup ran for "${parsed.place}" but the place couldn't be resolved — say so and ask for a clearer place name.)`;
+            }
+          }
+        } catch {
+          // weather lookup failed — proceed without it
+        }
+      }
+    }
+
+    {
+      const parsed = parseCurrencyQuery(rawText);
+      if (parsed) {
+        try {
+          const currencyRes = await fetch(
+            `/api/currency/convert?amount=${encodeURIComponent(parsed.amount)}&from=${parsed.from}&to=${parsed.to}`
+          );
+          const currencyData = await currencyRes.json();
+          if (currencyRes.ok) {
+            conversation.messages[conversation.messages.length - 1].currencyResults = currencyData;
+            saveConversations(conversations);
+            stopThinking();
+            renderMessages();
+            stopThinking = showThinkingIndicator(document.getElementById('messages'), THINKING_PHRASES);
+            augmentedContent = `${augmentedContent}\n\n--- Live currency conversion ---\n${currencyData.amount} ${currencyData.from} = ${currencyData.converted} ${currencyData.to} (rate: 1 ${currencyData.from} = ${currencyData.rate} ${currencyData.to}, as of ${currencyData.asOf || 'today'})\n\nThis is a real current rate, already shown to the user as a card above your reply — summarize it briefly rather than re-stating every number.`;
+          }
+        } catch {
+          // currency lookup failed — proceed without it
+        }
+      }
+    }
+
+    {
+      const parsed = parseTransferQuery(rawText);
+      if (parsed) {
+        try {
+          const transferRes = await fetch(
+            `/api/transfers/search?from=${encodeURIComponent(parsed.from)}&to=${encodeURIComponent(parsed.to)}&datetime=${encodeURIComponent(parsed.datetime)}`
+          );
+          const transferData = await transferRes.json();
+          if (transferRes.ok) {
+            conversation.messages[conversation.messages.length - 1].transferResults = transferData;
+            saveConversations(conversations);
+            stopThinking();
+            renderMessages();
+            stopThinking = showThinkingIndicator(document.getElementById('messages'), THINKING_PHRASES);
+
+            if (transferData.found && transferData.transfers?.length) {
+              const transfersText = transferData.transfers
+                .map((t, i) => `${i + 1}. ${t.vehicleType}${t.provider ? ' (' + t.provider + ')' : ''}: ${t.price ?? '?'} ${t.currency ?? ''}`)
+                .join('\n');
+              augmentedContent = `${augmentedContent}\n\n--- Live airport transfer search for ${transferData.from} → ${transferData.to} ---\n${transfersText}\n\nThese are real current quotes from a sample/test dataset, already shown to the user as a card above your reply — summarize briefly rather than re-listing every detail.`;
+            } else {
+              augmentedContent = `${augmentedContent}\n\n(Transfer search ran for ${parsed.from} → ${parsed.to} but found no offers in the sample dataset — say so.)`;
+            }
+          }
+        } catch {
+          // transfer search failed — proceed without it
+        }
+      }
+    }
+
     if (currentAttachment) {
       augmentedContent = `${augmentedContent}\n\n--- Content of attached file "${currentAttachment.name}" ---\n${currentAttachment.content}`;
     }
@@ -578,6 +788,7 @@ const PROVIDER_ICONS = {
   zoom: `<svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#2D8CFF"/><path fill="#fff" d="M6 9.5A1.5 1.5 0 0 1 7.5 8h6A1.5 1.5 0 0 1 15 9.5v5A1.5 1.5 0 0 1 13.5 16h-6A1.5 1.5 0 0 1 6 14.5v-5Z"/><path fill="#fff" d="m16 10.8 2.7-1.9c.4-.28.9.02.9.5v5.2c0 .48-.5.78-.9.5L16 13.2v-2.4Z"/></svg>`,
   dropbox: `<svg viewBox="0 0 24 24"><path fill="#0061FF" d="M6 3 0 6.75 6 10.5 12 6.75 6 3ZM18 3l-6 3.75 6 3.75 6-3.75L18 3ZM0 14.25 6 18l6-3.75L6 10.5l-6 3.75ZM12 14.25 18 18l6-3.75-6-3.75-6 3.75ZM6 19.5l6 3.75 6-3.75-6-3.75-6 3.75Z"/></svg>`,
   canvas: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#E2492D"/><path fill="#fff" d="M12 5a7 7 0 1 0 7 7c0-.55-.06-1.08-.16-1.6a3.5 3.5 0 0 1-4.24-4.24A6.96 6.96 0 0 0 12 5Z"/></svg>`,
+  tripit: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#1482D0"/><path fill="#fff" d="M4 12.7 19 6l-3.4 14.2-3.6-4.9-4.6 3 1-4.2L4 12.7Zm4.4.5 2.6 3.6 2-8.4-4.6 4.8Z"/></svg>`,
 };
 
 async function loadConnections() {

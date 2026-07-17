@@ -84,6 +84,16 @@ export const PROVIDERS = {
     extraAuthParams: {},
     tokenAuthStyle: 'body',
   },
+  tripit: {
+    label: 'TripIt (flights, hotels & Airbnb bookings)',
+    // TripIt uses OAuth 1.0a, not OAuth 2.0 — its connect/callback flow is handled by its
+    // own router (routes/tripit.js, mounted at /auth/tripit) rather than the generic
+    // OAuth 2.0 flow below. This entry only exists so the Connections page can list it and
+    // show whether it's configured.
+    oauth1: true,
+    clientIdEnv: 'TRIPIT_CONSUMER_KEY',
+    clientSecretEnv: 'TRIPIT_CONSUMER_SECRET',
+  },
 };
 
 export function getProviderConfig(providerKey) {

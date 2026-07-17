@@ -12,8 +12,9 @@
   Canvas, using genuine OAuth 2.0 flows against each provider, not mocked integrations.
 * 🔎 **Deep web search with citations** — toggle it on before a message sends to ground
   answers in current sources via Ollama's own web search API.
-* ✈️🏨 **Flights & hotels lookup** — auto-detected straight from your message (no manual
-  toggle), via Kiwi.com and Amadeus' developer APIs.
+* ✈️🏨 **Flights, hotels, transfers, weather & currency** — all auto-detected straight
+  from your message (no manual toggle), via Kiwi.com, Amadeus, and two fully free/keyless
+  services (Open-Meteo, open.er-api.com).
 * 🎓 **Built to flex to how you work** — studying for exams, writing essays, working
   through assessments and homework, debugging code, IT/ops triage, security research, or
   content-moderation support.
@@ -113,6 +114,18 @@ along with conversation history — there's no server-side chat history yet.
   test dataset rather than full live inventory — worth double-checking prices before
   booking. If your message doesn't contain a detectable city/check-in/check-out, the lookup
   is simply skipped.
+- **Airport transfers** — no toggle needed; triggers whenever your message contains the word
+  "transfer" plus an airport code, a destination, and a date, e.g. *"book a transfer from CDG
+  to Paris on 2026-08-01"*. Reuses the same `AMADEUS_CLIENT_ID`/`AMADEUS_CLIENT_SECRET` as
+  hotels (Amadeus' Transfer Search API, same sample/test dataset caveat) — the destination
+  name is resolved to coordinates via Open-Meteo's free geocoder first, so you don't need to
+  type a full address.
+- **Weather** — no toggle needed; triggers on "weather in/for &lt;place&gt;", optionally with
+  "on YYYY-MM-DD", e.g. *"what's the weather in Tokyo on 2026-08-01"*. Runs on
+  [Open-Meteo](https://open-meteo.com/), which is fully free and needs no API key at all.
+- **Currency conversion** — no toggle needed; triggers on "&lt;amount&gt; &lt;CODE&gt; to
+  &lt;CODE&gt;", e.g. *"convert 100 USD to EUR"*. Runs on the free, keyless tier of
+  [exchangerate-api.com](https://www.exchangerate-api.com/) (open.er-api.com).
 
 ### Connections (real OAuth)
 
@@ -131,10 +144,19 @@ broken Connect button. Where to register each one:
 | `zoom` | marketplace.zoom.us → Develop → Build App (OAuth type) | Zoom account access |
 | `dropbox` | dropbox.com/developers/apps | Files, account info (read-only scopes) |
 | `canvas` | Your institution's Canvas admin → Developer Keys (self-hosted, so also set `CANVAS_BASE_URL` to your institution's Canvas URL) | Courses, assignments, files |
+| `tripit` | tripit.com/developer | Aggregated flights, hotels & Airbnb bookings |
 
 Tokens are stored locally in `data/connections.json` (gitignored) — fine for single-user
 local dev, not a production-ready credential store. Clicking "Disconnect" deletes the
 stored token; it does not revoke it on the provider's side.
+
+**TripIt is the one exception to "each provider needs an OAuth app + redirect URI" above** —
+it uses OAuth 1.0a instead of OAuth 2.0 (no bearer token; every request is signed with
+HMAC-SHA1 using `TRIPIT_CONSUMER_KEY`/`TRIPIT_CONSUMER_SECRET`), so it has its own
+request-token → authorize → access-token flow (`oauth/tripit.js` + `routes/tripit.js`)
+instead of plugging into the generic OAuth 2.0 router the other providers share. Its
+callback URL follows the same pattern as everything else though:
+`{BASE_URL}/auth/tripit/callback`.
 
 ## clone-site.ps1 / clone-site.js
 
