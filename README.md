@@ -1,5 +1,7 @@
 # Antikythera GPT Chat
 
+[![Follow on X](https://img.shields.io/badge/Follow-@Antikythera67-000000?logo=x)](https://x.com/Antikythera67)
+
 ## The app (server.js)
 
 A ChatGPT-style chat page with a sidebar (conversation list, Settings, Connections), a
