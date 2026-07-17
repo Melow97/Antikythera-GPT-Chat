@@ -50,6 +50,7 @@ if (signupForm) {
       lastName: document.getElementById('lastName').value.trim(),
       email: document.getElementById('email').value.trim(),
       password: document.getElementById('password').value,
+      termsAgreed: document.getElementById('termsAgreed').checked,
     }, submitBtn, (data) => {
       window.location.href = '/verify-code.html?email=' + encodeURIComponent(data.email);
     });

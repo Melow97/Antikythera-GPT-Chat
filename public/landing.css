@@ -770,6 +770,25 @@ body {
   text-decoration: underline;
 }
 
+.footer-legal {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.footer-legal a {
+  color: var(--text-dim);
+  text-decoration: none;
+}
+
+.footer-legal a:hover {
+  color: var(--text);
+  text-decoration: underline;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .gear,
   .orbit-satellites,

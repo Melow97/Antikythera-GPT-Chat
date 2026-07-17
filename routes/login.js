@@ -46,7 +46,7 @@ function regenerateSession(req) {
 }
 
 router.post('/signup', authLimiter, async (req, res) => {
-  const { email, password, firstName, lastName } = req.body || {};
+  const { email, password, firstName, lastName, termsAgreed } = req.body || {};
 
   if (!email || !EMAIL_RE.test(String(email).trim())) {
     return res.status(400).json({ error: 'Enter a valid email address.' });
@@ -59,6 +59,9 @@ router.post('/signup', authLimiter, async (req, res) => {
   }
   if (!lastName || !String(lastName).trim()) {
     return res.status(400).json({ error: 'Last name is required.' });
+  }
+  if (termsAgreed !== true) {
+    return res.status(400).json({ error: 'You must agree to the Terms of Service and Privacy Policy.' });
   }
 
   if (findUserByEmail(email)) {

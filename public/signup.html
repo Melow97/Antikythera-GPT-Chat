@@ -39,6 +39,11 @@
         <input type="password" id="password" autocomplete="new-password" required minlength="8" />
         <p class="auth-hint">At least 8 characters.</p>
       </div>
+      <label class="auth-consent">
+        <input type="checkbox" id="termsAgreed" required />
+        <span>I agree to the <a href="/terms.html" target="_blank">Terms of Service</a> and
+          <a href="/privacy.html" target="_blank">Privacy Policy</a>.</span>
+      </label>
       <button type="submit" class="auth-submit" id="submitBtn">Create account</button>
     </form>
 

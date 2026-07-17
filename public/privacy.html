@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Privacy Policy — Antikythera GPT Chat</title>
+<link rel="icon" type="image/svg+xml" href="/logo.svg" />
+<link rel="stylesheet" href="/landing.css" />
+<link rel="stylesheet" href="/legal.css" />
+</head>
+<body>
+<div class="legal-page">
+  <a href="/" class="auth-brand" style="justify-content: flex-start;">
+    <img src="/logo.svg" alt="" />
+    Antikythera GPT Chat
+  </a>
+
+  <h1>Privacy Policy</h1>
+  <p class="legal-updated">Last updated: July 17, 2026</p>
+
+  <p>
+    Antikythera GPT Chat is a small, early-stage project. This page explains, in plain
+    language, what information the app actually collects, how it's used, and what your
+    options are. It describes the app's real, current behavior — not a generic template.
+  </p>
+
+  <h2>What we collect</h2>
+  <ul>
+    <li><strong>Account info:</strong> your email, first and last name, and a password —
+      stored as a one-way bcrypt hash, never in plain text.</li>
+    <li><strong>Google sign-in:</strong> if you use "Continue with Google," we receive your
+      Google account's email, name, and profile picture URL.</li>
+    <li><strong>Session cookie:</strong> a secure, HTTP-only cookie that keeps you signed in.
+      It contains no personal data itself, just a reference to your session.</li>
+    <li><strong>Connected apps (optional):</strong> if you connect Google, Microsoft, GitHub,
+      Slack, or Zoom from the Connections page, we store the resulting access/refresh tokens,
+      encrypted at rest, only to perform the actions those integrations are for. Nothing is
+      connected unless you explicitly click "Connect."</li>
+    <li><strong>Chat conversations:</strong> stored only in your own browser (localStorage) —
+      never on our servers. Clearing your browser data deletes them permanently; we don't
+      keep a copy and can't recover them for you.</li>
+    <li><strong>Message content, in transit:</strong> what you type is sent to the AI model
+      (Ollama, running locally or via Ollama Cloud depending on how this instance is
+      configured) to generate a reply. If you turn on Deep search, Flights, or Hotels for a
+      message, the relevant part of that message is also sent to the corresponding
+      third-party API (Ollama's web search, Kiwi.com, or Amadeus) to fetch live results.</li>
+  </ul>
+
+  <h2>What we don't do</h2>
+  <ul>
+    <li>We don't sell your data to anyone.</li>
+    <li>We don't use your chats to train any model — we don't have a copy of them to begin
+      with.</li>
+    <li>We don't share connected-app tokens with anyone besides the provider they're for.</li>
+  </ul>
+
+  <h2>Third-party services involved</h2>
+  <p>
+    Depending on which features you use, your data may pass through: Ollama (chat and web
+    search), Resend (account emails), Kiwi.com (flight search), Amadeus (hotel search), and
+    whichever providers you personally connect (Google, Microsoft, GitHub, Slack, Zoom). Each
+    has its own privacy practices we don't control — we only send what's needed for the
+    feature you're using, at the moment you use it.
+  </p>
+
+  <h2>Your rights</h2>
+  <p>
+    You can ask us to access, correct, or delete your account data at any time — this is a
+    small project without a self-service "delete my account" button yet, so email us and
+    we'll handle it directly, typically within a few days.
+  </p>
+
+  <h2>Children's privacy</h2>
+  <p>
+    This app isn't directed at children under 13, and we don't knowingly collect information
+    from them. If you believe a child has created an account, contact us and we'll remove it.
+  </p>
+
+  <h2>Security</h2>
+  <p>
+    Passwords are hashed, sessions are HTTP-only, and connected-app tokens are encrypted at
+    rest. No online service can guarantee perfect security, but we take reasonable, real
+    steps rather than just claiming to.
+  </p>
+
+  <h2>Changes to this policy</h2>
+  <p>
+    If this policy changes in a meaningful way, we'll update the date at the top of this
+    page. Continuing to use the app after a change means you accept the update.
+  </p>
+
+  <div class="legal-contact-box">
+    <h2>Questions, feedback, or a feature idea?</h2>
+    <p>
+      This is genuinely a two-way conversation, not just a legal formality — if you've got a
+      privacy question, a feature request, a bug report, or just want to tell us what's
+      working or not, we'd like to hear it: <a href="mailto:antikytheragptchat@gmail.com">antikytheragptchat@gmail.com</a>.
+    </p>
+  </div>
+
+  <p class="legal-nav">
+    <a href="/terms.html">Terms of Service</a> &nbsp;·&nbsp; <a href="/">Back to home</a>
+  </p>
+</div>
+</body>
+</html>
