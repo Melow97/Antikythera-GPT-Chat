@@ -2,6 +2,32 @@
 
 [![Follow on X](https://img.shields.io/badge/Follow-@Antikythera67-000000?logo=x)](https://x.com/Antikythera67)
 
+## ✨ Key Features
+
+* 🚀 **Effortless local setup** — `npm install`, copy `.env.example` to `.env`, `npm start`.
+  No Docker or Kubernetes needed to run your own instance.
+* 🤖 **Ollama-only chat** — free, no chat API key required. Run fully local, or point at
+  Ollama Cloud ("Turbo") with your own key.
+* 🔌 **Real OAuth connections** — Google, Microsoft, GitHub, Slack, Zoom, Dropbox, and
+  Canvas, using genuine OAuth 2.0 flows against each provider, not mocked integrations.
+* 🔎 **Deep web search with citations** — toggle it on before a message sends to ground
+  answers in current sources via Ollama's own web search API.
+* ✈️🏨 **Flights & hotels lookup** — auto-detected straight from your message (no manual
+  toggle), via Kiwi.com and Amadeus' developer APIs.
+* 🎓 **Built to flex to how you work** — studying for exams, writing essays, working
+  through assessments and homework, debugging code, IT/ops triage, security research, or
+  content-moderation support.
+* 🔐 **Security by default** — AES-256-GCM-encrypted OAuth token storage, bcrypt-hashed
+  passwords, rate-limited auth routes, session rotation on login, and Helmet security
+  headers.
+* ✉️ **Email verification & password reset** — 6-digit code sign-up verification and a
+  reset-link flow, both sent via Resend.
+* 🪪 **Sign in your way** — email/password or "Continue with Google," your choice.
+* 🛠️ **Admin panel** — pick the default Ollama model, view basic usage stats, and post a
+  site-wide announcement banner.
+* 📖 **Open source & self-hosted** — inspect it, fork it, or run your own instance. Free
+  while it's early-stage.
+
 ## The app (server.js)
 
 A ChatGPT-style chat page with a sidebar (conversation list, Settings, Connections), a
@@ -46,10 +72,11 @@ based on what's in `.env`:
   Antikythera GPT Chat automatically points at `https://ollama.com` instead of localhost. Override with
   `OLLAMA_BASE_URL` if your cloud endpoint differs.
 
-The model itself (which one Ollama uses) is fixed server-side (`llama3.2` by default) — it's
-not a user-facing setting for anyone, admin included. To change it, edit the default in
-`routes/chat.js`. Persona/system prompt is visible to everyone and saved in the browser's
-`localStorage`, along with conversation history — there's no server-side chat history yet.
+The model itself (which one Ollama uses) defaults to `llama3.2` and is picked server-side —
+it's not a per-user setting, but the admin account (`ADMIN_EMAIL` in `.env`) can change the
+default for everyone from the in-app Admin panel, stored in `data/admin-settings.json`.
+Persona/system prompt is visible to everyone and saved in the browser's `localStorage`,
+along with conversation history — there's no server-side chat history yet.
 
 ### Composer bar extras
 
@@ -167,3 +194,14 @@ cloning (landing pages, portfolios, marketing sites), not for replicating anothe
 site's authentication flow.
 
 `clones/` is gitignored since output can be large and is regenerable.
+
+## 💛 Support this project
+
+Antikythera GPT Chat is a solo, open-source project — there's no company, no sales team,
+and no SLA behind it yet, just one person building it in the open.
+
+If you'd like to help fund ongoing development, or want to talk about a custom
+deployment, integration, or partnership, reach out at **antikytheragptchat@gmail.com**, or
+send a contribution directly:
+
+- **Revolut** — [revolut.me/mel3zaui](https://revolut.me/mel3zaui)
